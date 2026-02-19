@@ -60,18 +60,17 @@ int main()
    form_iterator nv = cgi.getElement("num_verse");
 
    // Convert and check input data
-   bool validInput = false;
-   LookupResult result;
+   bool validInput = false; LookupResult result;
    if (chapter != cgi.getElements().end() &&
-      verse != cgi.getElements().end() &&
-      nv != cgi.getElements().end())
-   {
+      verse != cgi.getElements().end()){
       validInput = true;
    }
    int bookNum = book->getIntegerValue();
    int chapterNum = chapter->getIntegerValue();
    int verseNum = verse->getIntegerValue();
-   int numberOfVerses = nv->getIntegerValue();
+   int numberOfVerses = 1;
+   if (nv != cgi.getElements().end() && !nv->isEmpty())
+      nv->getIntegerValue();
    Ref ref(bookNum, chapterNum, verseNum);
    cout << "<p>Looking up reference: ";
    ref.display();
@@ -91,9 +90,11 @@ int main()
     * so we must include HTML formatting commands to make things look presentable!
     */
    if (validInput){
+      if (!nv->isEmpty())
+	 numberOfVerses == 1;
       vector<Verse> verses = bible.lookup(ref, result, numberOfVerses);
-      cout << "Result status: " << result << endl;
       if (result == SUCCESS){
+	 cout << "<p>Verse found.<p/>" << endl;
          for (int i = 0; i < numberOfVerses; i++){
 	    if (!(verses[i].getVerse() == "Uninitialized Verse!")){
 	       cout << "<p>";
@@ -108,20 +109,10 @@ int main()
   	    }
          }
       }
+      else if (result == NO_CHAPTER)
+	 cout << "<p>Chapter not found.<p/>" << endl;
+      else
+	 cout << "<p>Verse not found.<p/>" << endl;
    }
-
- //  if (validInput)
- //  {
- //     cout << "Search Type: <b>" << **st << "</b>" << endl;
- //     cout << "<p>Your result: "
- //          << **book << " " << **chapter << ":" << **verse
- //          << "<em> The " << **nv
- //          << " actual verse(s) retreived from the server should go here!</em></p>" << endl;
- //  }
-   else
-   {
-      cout << "<p>Input numbers into the text boxes.</em></p>" << endl;
-   }
-
    return 0;
 }

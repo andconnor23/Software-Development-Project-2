@@ -30,6 +30,18 @@ bibleajax.cgi:	bibleajax.o Bible.o Ref.o Verse.o
 bibleajax.o:	bibleajax.cpp Bible.cpp Ref.cpp Verse.cpp
 	$(CC) $(CFLAGS) -c bibleajax.cpp
 
+# Ref Object
+Ref.o : Ref.h Ref.cpp
+	$(CC) $(CFLAGS) -c Ref.cpp
+
+# Verse Object
+Verse.o : Ref.h Verse.h Verse.cpp
+	$(CC) $(CFLAGS) -c Verse.cpp
+
+# Bible Object
+Bible.o : Ref.h Verse.h Bible.h Bible.cpp
+	$(CC) $(CFLAGS) -c Bible.cpp
+
 # TODO: copy targets to build classes from Project 1:
 # Bible.o, Ref.o, Verse.o
 

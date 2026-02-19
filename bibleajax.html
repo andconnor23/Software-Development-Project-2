@@ -59,6 +59,19 @@ https://cs.mvnu.edu/class/csc3004/USERNAME/bibleajax.html<!-- bibleajax.html
         alert("Please select a search type!");
         return;
      }
+
+     var chapter = document.getElementById('chapter').value.trim();
+     var verse = document.getElementById('verse').value.trim();
+
+     // Checks if the chapter and verse boxes are empty
+     if (searchType.value == "reference"){
+        if (chapter === "" || verse === ""){
+          alert("Insert numbers into the text boxes to search.");
+          return;
+        }
+     }
+
+
      // NOTE: This page must be loaded from cs.mvnu.edu to avoid a cross-origin request violation.
      XMLHttp.open("GET", "/class/csc3004/andconnor/cgi-bin/bibleajax.cgi?"
                   + "search_type=" + searchType.value
@@ -67,6 +80,7 @@ https://cs.mvnu.edu/class/csc3004/USERNAME/bibleajax.html<!-- bibleajax.html
                   + "&verse=" + document.getElementById('verse').value
                   + "&num_verse=" + document.getElementById('num_verse').value,
                   true); // true indicates asynchronous request
+     
    
      // callback function
      XMLHttp.onreadystatechange=function()
